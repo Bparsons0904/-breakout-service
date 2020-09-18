@@ -76,7 +76,7 @@ const server = new ApolloServer({
   },
 });
 
-server.applyMiddleware({ app, path: '/graphql' });
+server.applyMiddleware({ app, path: '/graphql2' });
 
 const httpServer = http.createServer(app);
 server.installSubscriptionHandlers(httpServer);
@@ -87,6 +87,6 @@ const port = process.env.PORT || 8000;
 
 connectDb().then(async () => {
   httpServer.listen({ port }, () => {
-    console.log(`Apollo Server on http://localhost:${port}/graphql`);
+    console.log(`Apollo Server on http://localhost:${port}/graphql2`);
   });
 });

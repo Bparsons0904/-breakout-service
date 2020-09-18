@@ -1,0 +1,32 @@
+import { gql } from 'apollo-server-express';
+
+export default gql`
+  extend type Query {
+    companies: Company!
+    company(id: ID!): Company!
+  }
+
+  extend type Mutation {
+    createCompany(
+      name: String!
+      location: String!
+      website: String!
+      imageUrl: String!
+      active: Boolean
+    ): CompanyCreated!
+    deleteCompany(id: ID!): Boolean!
+  }
+
+  type Company {
+    id: ID!
+    name: String!
+    location: String!
+    website: String!
+    imageUrl: String!
+    active: Boolean
+  }
+
+  type CompanyCreated {
+    company: Company!
+  }
+`;

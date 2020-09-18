@@ -91,11 +91,11 @@ export default {
     ),
   },
 
-  User: {
-    messages: async (user, args, { models }) => {
-      return await models.Message.find({
-        userId: user.id,
-      });
-    },
-  },
+  // User: {
+  //   messages: async (user, args, { models }) => {
+  //     return await models.Message.find({
+  //       userId: user.id,
+  //     });
+  //   },
+  // },
 };

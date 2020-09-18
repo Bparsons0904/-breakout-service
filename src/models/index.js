@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 
 import User from './user';
-import Message from './message';
+import Room from './room';
+import Company from './company';
 
 const connectDb = () => {
   if (process.env.TEST_DATABASE_URL) {
@@ -18,7 +19,7 @@ const connectDb = () => {
   }
 };
 
-const models = { User, Message };
+const models = { User, Room, Company };
 
 export { connectDb };
 
