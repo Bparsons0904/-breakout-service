@@ -24,6 +24,24 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
   },
+  wishlist: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Room',
+  },
+  completedRooms: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Room',
+  },
+  favorites: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Room',
+  },
+  successfulRooms: {
+    type: Number,
+  },
+  failedRooms: {
+    type: Number,
+  },
 });
 
 userSchema.statics.findByLogin = async function (login) {

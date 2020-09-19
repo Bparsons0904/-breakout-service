@@ -23,7 +23,6 @@ export default {
       if (!me) {
         return null;
       }
-
       return await models.User.findById(me.id);
     },
   },
@@ -40,7 +39,13 @@ export default {
         password,
       });
 
-      return { token: createToken(user, secret, '30m') };
+      user.successfulRooms = 0;
+      user.failedRooms = 0;
+      user.role = 'user';
+
+      user.update();
+
+      return { token: createToken(user, secret, '30 days') };
     },
 
     signIn: async (
@@ -62,7 +67,7 @@ export default {
         throw new AuthenticationError('Invalid password.');
       }
 
-      return { token: createToken(user, secret, '30m') };
+      return { token: createToken(user, secret, '30 days') };
     },
 
     updateUser: combineResolvers(
@@ -87,6 +92,43 @@ export default {
         } else {
           return false;
         }
+      },
+    ),
+
+    addWishlist: combineResolvers(
+      isAuthenticated,
+      async (parent, { roomId }, { models, me }) => {
+        const user = await models.User.findById(me.id);
+        user.wishlist.push(roomId);
+        user.update();
+
+        return user;
+      },
+    ),
+
+    addCompleted: combineResolvers(
+      isAuthenticated,
+      async (parent, { args }, { models, me }) => {
+        const user = await models.User.findById(me.id);
+        user.completedRooms.push(args.roomId);
+        if (args.success) {
+          user.successfulRooms++;
+        } else {
+          user.failedRooms++;
+        }
+        user.update();
+
+        return user;
+      },
+    ),
+    addFavorite: combineResolvers(
+      isAuthenticated,
+      async (parent, { roomId }, { models, me }) => {
+        const user = await models.User.findById(id);
+        user.favorites.push(roomId);
+        user.update();
+
+        return user;
       },
     ),
   },

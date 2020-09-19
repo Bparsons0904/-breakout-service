@@ -24,6 +24,7 @@ export default gql`
     website: String!
     imageUrl: String!
     active: Boolean
+    rooms: [Room]
   }
 
   type CompanyCreated {

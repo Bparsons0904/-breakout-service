@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Room from './room';
 
 const companySchema = new mongoose.Schema({
   name: {
@@ -20,6 +21,10 @@ const companySchema = new mongoose.Schema({
   active: {
     type: Boolean,
     required: true,
+  },
+  rooms: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Room',
   },
 });
 
