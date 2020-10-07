@@ -6,9 +6,9 @@ import { isAuthenticated } from './authorization';
 export default {
   Query: {
     companies: async (parent, args, { models }) => {
-      const companies = await models.Company.find();
+      const companies = await models.Company.find({});
 
-      return { companies };
+      return companies;
     },
     company: async (parent, { id }, { models }) => {
       return await models.Company.findById(id);
@@ -18,12 +18,12 @@ export default {
   Mutation: {
     createCompany: combineResolvers(
       isAuthenticated,
-      async (parent, { args }, { models, me }) => {
+      async (parent, args, { models, me }) => {
+        console.log('gets here', args);
         const company = await models.Company.create({
           ...args,
         });
-
-        return company;
+        return { company };
       },
     ),
 

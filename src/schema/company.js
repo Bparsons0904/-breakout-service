@@ -2,7 +2,7 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
   extend type Query {
-    companies: Company!
+    companies(active: Boolean): [Company!]
     company(id: ID!): Company!
   }
 
@@ -18,11 +18,12 @@ export default gql`
   }
 
   type Company {
-    id: ID!
-    name: String!
-    location: String!
-    website: String!
-    imageUrl: String!
+    id: ID
+    name: String
+    description: String
+    location: String
+    website: String
+    imageUrl: String
     active: Boolean
     rooms: [Room]
   }
