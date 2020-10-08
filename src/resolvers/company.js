@@ -19,11 +19,20 @@ export default {
     createCompany: combineResolvers(
       isAuthenticated,
       async (parent, args, { models, me }) => {
-        console.log('gets here', args);
+        console.log(args);
         const company = await models.Company.create({
           ...args,
         });
         return { company };
+      },
+    ),
+    approveCompany: combineResolvers(
+      isAuthenticated,
+      async (parent, args, { models, me }) => {
+        const company = await models.Company.findById(args.id);
+        company.active = true;
+        await company.save();
+        return company.active;
       },
     ),
 

@@ -9,11 +9,13 @@ export default gql`
   extend type Mutation {
     createCompany(
       name: String!
+      description: String!
       location: String!
       website: String!
       imageUrl: String!
       active: Boolean
     ): CompanyCreated!
+    approveCompany(id: ID!): Boolean!
     deleteCompany(id: ID!): Boolean!
   }
 
