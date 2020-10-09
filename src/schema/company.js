@@ -14,9 +14,9 @@ export default gql`
       website: String!
       imageUrl: String!
       active: Boolean
-    ): CompanyCreated!
-    approveCompany(id: ID!): Boolean!
-    deleteCompany(id: ID!): Boolean!
+    ): [Company]!
+    approveCompany(id: ID!): [Company!]
+    removeCompany(id: ID!): [Company!]
   }
 
   type Company {

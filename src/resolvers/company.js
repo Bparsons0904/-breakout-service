@@ -23,7 +23,8 @@ export default {
         const company = await models.Company.create({
           ...args,
         });
-        return { company };
+        const companies = await models.Company.find({});
+        return companies;
       },
     ),
     approveCompany: combineResolvers(
@@ -32,11 +33,14 @@ export default {
         const company = await models.Company.findById(args.id);
         company.active = true;
         await company.save();
-        return company.active;
+
+        const companies = await models.Company.find({});
+        console.log(companies);
+        return companies;
       },
     ),
 
-    deleteCompany: combineResolvers(
+    removeCompany: combineResolvers(
       isAuthenticated,
 
       async (parent, { id }, { models }) => {
@@ -44,10 +48,11 @@ export default {
 
         if (company) {
           await company.remove();
-          return true;
-        } else {
-          return false;
         }
+
+        const companies = await models.Company.find({});
+        console.log(companies);
+        return companies;
       },
     ),
   },
