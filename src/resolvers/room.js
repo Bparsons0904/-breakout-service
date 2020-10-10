@@ -6,9 +6,9 @@ import { isAuthenticated } from './authorization';
 export default {
   Query: {
     rooms: async (parent, args, { models }) => {
-      const rooms = await models.Room.find();
+      const rooms = await models.Room.find({});
 
-      return { rooms };
+      return rooms;
     },
     room: async (parent, { id }, { models }) => {
       return await models.Room.findById(id);
@@ -18,16 +18,40 @@ export default {
   Mutation: {
     createRoom: combineResolvers(
       isAuthenticated,
-      async (parent, { args }, { models, me }) => {
+      async (parent, args, { models, me }) => {
         const room = await models.Room.create({
           ...args,
         });
 
-        return room;
+        room.active = false;
+        room.successes = 0;
+        room.attempts = 0;
+        room.fastest = null;
+        await room.save();
+        const rooms = await models.Room.find({});
+
+        return rooms;
       },
     ),
 
-    deleteRoom: combineResolvers(
+    approveRoom: combineResolvers(
+      isAuthenticated,
+
+      async (parent, { id }, { models }) => {
+        const room = await models.Room.findById(id);
+
+        if (room) {
+          room.active = true;
+          await room.save();
+        }
+
+        const rooms = await models.Room.find({});
+
+        return rooms;
+      },
+    ),
+
+    removeRoom: combineResolvers(
       isAuthenticated,
 
       async (parent, { id }, { models }) => {
@@ -35,10 +59,11 @@ export default {
 
         if (room) {
           await room.remove();
-          return true;
-        } else {
-          return false;
         }
+
+        const rooms = await models.Room.find({});
+
+        return rooms;
       },
     ),
   },

@@ -2,28 +2,34 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
   extend type Query {
-    rooms: Room!
+    rooms: [Room!]
     room(id: ID!): Room!
   }
 
   extend type Mutation {
     createRoom(
       name: String!
-      intro: String!
+      description: String!
       imageUrl: String!
-    ): RoomCreated!
+      website: String!
+      companyId: ID
+    ): [Room!]
 
-    deleteRoom(id: ID!): Boolean!
+    approveRoom(id: ID!): [Room!]
+    removeRoom(id: ID!): [Room!]
   }
 
   type Room {
     id: ID!
     name: String!
-    intro: String!
+    description: String!
     imageUrl: String!
+    website: String!
+    active: Boolean
     successes: Float
     attempts: Float
     fastest: Float
+    companyId: ID!
   }
 
   type RoomCreated {

@@ -5,20 +5,24 @@ const roomSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  intro: {
+  description: {
     type: String,
     required: true,
   },
   imageUrl: {
     type: String,
   },
+  active: {
+    type: Boolean,
+  },
+  website: {
+    type: String,
+  },
   successes: {
     type: Number,
-    required: true,
   },
   attempts: {
     type: Number,
-    required: true,
   },
   fastest: {
     type: Number,
