@@ -12,7 +12,7 @@ export default gql`
       description: String!
       imageUrl: String!
       website: String!
-      companyId: ID
+      companyId: ID!
     ): [Room!]
 
     approveRoom(id: ID!): [Room!]
