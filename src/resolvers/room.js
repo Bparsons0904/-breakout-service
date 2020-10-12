@@ -26,7 +26,7 @@ export default {
         room.active = false;
         room.successes = 0;
         room.attempts = 0;
-        room.fastest = null;
+        room.fastest = 0;
         await room.save();
         console.log(room);
         const rooms = await models.Room.find({});
