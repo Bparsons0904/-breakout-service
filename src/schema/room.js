@@ -14,6 +14,12 @@ export default gql`
       website: String!
       companyId: ID!
     ): [Room!]
+    updateRoom(
+      id: ID!
+      successes: Float
+      attempts: Float
+      fastest: Float
+    ): [Room!]
 
     approveRoom(id: ID!): [Room!]
     removeRoom(id: ID!): [Room!]

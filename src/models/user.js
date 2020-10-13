@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 import bcrypt from 'bcrypt';
 import isEmail from 'validator/lib/isEmail';
@@ -19,23 +19,26 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 7,
-    maxlength: 42,
+    maxlength: 99,
   },
   role: {
     type: String,
   },
-  wishlist: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: 'Room',
-  },
-  completedRooms: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: 'Room',
-  },
-  favorites: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: 'Room',
-  },
+  wishlist: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+  ],
+  completedRooms: [
+    {
+      type: String,
+    },
+  ],
+  favorites: [
+    {
+      type: String,
+    },
+  ],
   successfulRooms: {
     type: Number,
   },

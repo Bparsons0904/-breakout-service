@@ -3,6 +3,7 @@ import { combineResolvers } from 'graphql-resolvers';
 import { AuthenticationError, UserInputError } from 'apollo-server';
 
 import { isAdmin, isAuthenticated } from './authorization';
+import { argsToArgsConfig } from 'graphql/type/definition';
 
 const createToken = async (user, secret, expiresIn) => {
   const { id, email, username, role } = user;
@@ -70,14 +71,59 @@ export default {
       return { token: createToken(user, secret, '30 days') };
     },
 
-    updateUser: combineResolvers(
+    updateWishlist: combineResolvers(
       isAuthenticated,
-      async (parent, { username }, { models, me }) => {
-        return await models.User.findByIdAndUpdate(
-          me.id,
-          { username },
-          { new: true },
-        );
+      async (parent, args, { models, me }) => {
+        const user = await models.User.findById(me.id);
+        console.log('Update wishlist', args.id);
+        if (args.add) {
+          if (user.wishlist.indexOf(args.id) === -1) {
+            user.wishlist.push(args.id);
+          }
+        } else {
+          const index = user.wishlist.indexOf(args.id);
+          user.wishlist.splice(index, 1);
+        }
+        user.save();
+        console.log(user);
+        return user;
+      },
+    ),
+
+    updateFavorite: combineResolvers(
+      isAuthenticated,
+      async (parent, args, { models, me }) => {
+        const user = await models.User.findById(me.id);
+        console.log('Update favorite', args.id);
+        if (args.add) {
+          if (user.favorites.indexOf(args.id) === -1) {
+            user.favorites.push(args.id);
+          }
+        } else {
+          const index = user.favorites.indexOf(args.id);
+          user.favorites.splice(index, 1);
+        }
+        user.save();
+        console.log(user);
+        return user;
+      },
+    ),
+    updateCompletedRooms: combineResolvers(
+      isAuthenticated,
+      async (parent, args, { models, me }) => {
+        const user = await models.User.findById(me.id);
+        console.log('Update completedRooms', args.id);
+        if (args.add) {
+          if (user.completedRooms.indexOf(args.id) === -1) {
+            user.completedRooms.push(args.id);
+          }
+        } else {
+          const index = user.completedRooms.indexOf(args.id);
+          user.completedRooms.splice(index, 1);
+        }
+        user.save();
+        console.log(user);
+        return user;
       },
     ),
 
@@ -92,43 +138,6 @@ export default {
         } else {
           return false;
         }
-      },
-    ),
-
-    addWishlist: combineResolvers(
-      isAuthenticated,
-      async (parent, { roomId }, { models, me }) => {
-        const user = await models.User.findById(me.id);
-        user.wishlist.push(roomId);
-        user.update();
-
-        return user;
-      },
-    ),
-
-    addCompleted: combineResolvers(
-      isAuthenticated,
-      async (parent, { args }, { models, me }) => {
-        const user = await models.User.findById(me.id);
-        user.completedRooms.push(args.roomId);
-        if (args.success) {
-          user.successfulRooms++;
-        } else {
-          user.failedRooms++;
-        }
-        user.update();
-
-        return user;
-      },
-    ),
-    addFavorite: combineResolvers(
-      isAuthenticated,
-      async (parent, { roomId }, { models, me }) => {
-        const user = await models.User.findById(id);
-        user.favorites.push(roomId);
-        user.update();
-
-        return user;
       },
     ),
   },

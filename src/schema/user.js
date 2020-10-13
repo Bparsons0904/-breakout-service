@@ -15,11 +15,18 @@ export default gql`
     ): Token!
 
     signIn(login: String!, password: String!): Token!
-    updateUser(username: String!): User!
+    updateUser(
+      id: ID
+      wishlist: ID
+      completedRooms: ID
+      favorites: ID
+      successfulRooms: Int
+      failedRooms: Int
+    ): User!
     deleteUser(id: ID!): Boolean!
-    addFavorite(roomId: ID!): User
-    addCompleted(roomId: ID!): User
-    addWishlist(roomId: ID!): User
+    updateWishlist(id: ID, add: Boolean): User
+    updateFavorite(id: ID, add: Boolean): User
+    updateCompletedRooms(id: ID, add: Boolean): User
     addSuccess: User
     addFailure: User
   }
@@ -33,9 +40,9 @@ export default gql`
     username: String!
     email: String!
     role: String
-    wishlist: [Room]
-    completedRooms: [Room]
-    favorites: [Room]
+    wishlist: [String]
+    completedRooms: [String]
+    favorites: [String]
     successfulRooms: Int
     failedRooms: Int
   }

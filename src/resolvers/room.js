@@ -35,19 +35,34 @@ export default {
       },
     ),
 
+    updateRoom: combineResolvers(
+      isAuthenticated,
+      async (parent, args, { models }) => {
+        let room = await models.Room.findById(args.id);
+        if (room) {
+          for (const key in args) {
+            if (args.hasOwnProperty(key)) {
+              const element = args[key];
+              room[key] = element;
+            }
+          }
+          await room.save();
+        }
+        console.log(room);
+        const rooms = await models.Room.find({});
+        return rooms;
+      },
+    ),
+
     approveRoom: combineResolvers(
       isAuthenticated,
-
       async (parent, { id }, { models }) => {
         const room = await models.Room.findById(id);
-
         if (room) {
           room.active = true;
           await room.save();
         }
-
         const rooms = await models.Room.find({});
-
         return rooms;
       },
     ),
