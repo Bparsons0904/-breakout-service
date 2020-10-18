@@ -39,6 +39,8 @@ const server = new ApolloServer({
   introspection: true,
   typeDefs: schema,
   resolvers,
+  introspection: true,
+  playground: true,
   formatError: (error) => {
     const message = error.message.replace('Validation error: ', '');
 
