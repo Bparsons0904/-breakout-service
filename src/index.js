@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import cors from 'cors';
-
+import morgan from 'morgan';
 import http from 'http';
 import jwt from 'jsonwebtoken';
 import DataLoader from 'dataloader';
@@ -19,11 +19,8 @@ import loaders from './loaders';
 const app = express();
 // And in cross script through cors
 app.use(cors());
-
-if (process.env.TEST_DATABASE_URL) {
-  import morgan from 'morgan';
-  app.use(morgan('dev'));
-}
+// Add morgan plugin
+app.use(morgan('dev'));
 
 // Load user based on token
 const getMe = async (req) => {
