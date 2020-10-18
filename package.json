@@ -1,5 +1,5 @@
 {
-  "name": "apollo-graphqp-express-mongodb-boilerplate",
+  "name": "breakout",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,11 @@
     "node": "10.11.0"
   },
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js"
+    "start": "node dist/index.js",
+    "dev": "nodemon --exec babel-node src/index.js",
+    "clean": "rm -rf dist && mkdir dist",
+    "build-server": "babel -d ./dist ./src -s",
+    "build": "npm run clean && npm run build-server"
   },
   "keywords": [],
   "devDependencies": {
@@ -22,6 +26,7 @@
     "nodemon": "^2.0.4"
   },
   "dependencies": {
+    "@babel/cli": "^7.12.1",
     "apollo-server": "^2.16.1",
     "apollo-server-express": "^2.16.1",
     "bcrypt": "^5.0.0",

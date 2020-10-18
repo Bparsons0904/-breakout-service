@@ -28,20 +28,12 @@ export default {
   },
 
   Mutation: {
-    signUp: async (
-      parent,
-      { username, email, password, role },
-      { models, secret },
-    ) => {
-      const successfulRooms = 0;
-      const failedRooms = 0;
+    signUp: async (parent, args, { models, secret }) => {
+      args.successfulRooms = 0;
+      args.failedRooms = 0;
+      args.role = args.role ? args.role : 'user';
       const user = await models.User.create({
-        username,
-        email,
-        password,
-        successfulRooms,
-        failedRooms,
-        role,
+        ...args,
       });
 
       return { token: createToken(user, secret, '30 days') };
@@ -120,7 +112,6 @@ export default {
           user.completedRooms.splice(index, 1);
         }
         user.save();
-        console.log(user);
         return user;
       },
     ),
