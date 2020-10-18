@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import cors from 'cors';
-import morgan from 'morgan';
+
 import http from 'http';
 import jwt from 'jsonwebtoken';
 import DataLoader from 'dataloader';
@@ -21,6 +21,7 @@ const app = express();
 app.use(cors());
 
 if (process.env.TEST_DATABASE_URL) {
+  import morgan from 'morgan';
   app.use(morgan('dev'));
 }
 
