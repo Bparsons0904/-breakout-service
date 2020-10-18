@@ -1,4 +1,5 @@
 import { combineResolvers } from 'graphql-resolvers';
+import { model } from 'mongoose';
 
 import pubsub, { EVENTS } from '../subscription';
 import { isAuthenticated } from './authorization';
@@ -51,6 +52,35 @@ export default {
         console.log(room);
         const rooms = await models.Room.find({});
         return rooms;
+      },
+    ),
+
+    completeRoom: combineResolvers(
+      isAuthenticated,
+      async (parent, args, { models, me }) => {
+        const room = await models.Room.findById(args.id);
+        const user = await models.User.findById(me.id);
+        if (args.time < room.timeLimit) {
+          console.log('Successful Completion');
+          room.attempts++;
+          room.successes++;
+          if (args.time < room.fastest) {
+            room.fastest = args.time;
+          }
+        } else {
+          room.attempts++;
+        }
+        const wishlistIndex = user.wishlist.indexOf(args.id);
+        if (wishlistIndex >= 0) {
+          user.wishlist.splice(wishlistIndex, 1);
+        }
+        if (user.completedRooms.indexOf(args.id) === -1) {
+          user.completedRooms.push(args.id);
+        }
+        await user.save();
+        await room.save();
+        const rooms = await models.Room.find({});
+        return { rooms, user };
       },
     ),
 

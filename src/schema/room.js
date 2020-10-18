@@ -13,6 +13,7 @@ export default gql`
       imageUrl: String!
       website: String!
       companyId: ID!
+      timeLimit: Float!
     ): [Room!]
     updateRoom(
       id: ID!
@@ -23,6 +24,7 @@ export default gql`
 
     approveRoom(id: ID!): [Room!]
     removeRoom(id: ID!): [Room!]
+    completeRoom(id: ID!, time: Float): RoomCompleted
   }
 
   type Room {
@@ -35,10 +37,16 @@ export default gql`
     successes: Float
     attempts: Float
     fastest: Float
+    timeLimit: Float!
     companyId: ID!
   }
 
   type RoomCreated {
     room: Room!
+  }
+
+  type RoomCompleted {
+    rooms: [Room!]
+    user: User
   }
 `;

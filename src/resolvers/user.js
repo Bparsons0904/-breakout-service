@@ -34,17 +34,17 @@ export default {
       { username, email, password },
       { models, secret },
     ) => {
+      const successfulRooms = 0;
+      const failedRooms = 0;
+      const role = 'user';
       const user = await models.User.create({
         username,
         email,
         password,
+        successfulRooms,
+        failedRooms,
+        role,
       });
-
-      user.successfulRooms = 0;
-      user.failedRooms = 0;
-      user.role = 'user';
-
-      user.update();
 
       return { token: createToken(user, secret, '30 days') };
     },

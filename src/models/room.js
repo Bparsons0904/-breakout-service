@@ -27,6 +27,9 @@ const roomSchema = new mongoose.Schema({
   fastest: {
     type: Number,
   },
+  timeLimit: {
+    type: Number,
+  },
   companyId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Company',
