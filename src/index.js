@@ -20,7 +20,7 @@ const app = express();
 // And in cross script through cors
 app.use(cors());
 
-if (!process.env.PORT) {
+if (process.env.TEST_DATABASE_URL) {
   app.use(morgan('dev'));
 }
 
