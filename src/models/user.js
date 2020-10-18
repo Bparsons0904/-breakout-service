@@ -31,12 +31,12 @@ const userSchema = new mongoose.Schema({
   ],
   completedRooms: [
     {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
     },
   ],
   favorites: [
     {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
     },
   ],
   successfulRooms: {
@@ -58,10 +58,6 @@ userSchema.statics.findByLogin = async function (login) {
 
   return user;
 };
-
-// userSchema.pre('remove', function(next) {
-//   this.model('Message').deleteMany({ userId: this._id }, next);
-// });
 
 userSchema.pre('save', async function () {
   this.password = await this.generatePasswordHash();

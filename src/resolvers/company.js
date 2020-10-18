@@ -1,7 +1,5 @@
 import { combineResolvers } from 'graphql-resolvers';
-
-import pubsub, { EVENTS } from '../subscription';
-import { isAuthenticated } from './authorization';
+import { isAdmin, isAuthenticated } from './authorization';
 
 export default {
   Query: {
@@ -29,19 +27,20 @@ export default {
     ),
     approveCompany: combineResolvers(
       isAuthenticated,
+      isAdmin,
       async (parent, args, { models, me }) => {
         const company = await models.Company.findById(args.id);
         company.active = true;
         await company.save();
 
         const companies = await models.Company.find({});
-        console.log(companies);
         return companies;
       },
     ),
 
     removeCompany: combineResolvers(
       isAuthenticated,
+      isAdmin,
 
       async (parent, { id }, { models }) => {
         const company = await models.Company.findById(id);
@@ -51,7 +50,6 @@ export default {
         }
 
         const companies = await models.Company.find({});
-        console.log(companies);
         return companies;
       },
     ),

@@ -1,8 +1,6 @@
 import { combineResolvers } from 'graphql-resolvers';
-import { model } from 'mongoose';
 
-import pubsub, { EVENTS } from '../subscription';
-import { isAuthenticated } from './authorization';
+import { isAdmin, isAuthenticated } from './authorization';
 
 export default {
   Query: {
@@ -29,7 +27,6 @@ export default {
         room.attempts = 0;
         room.fastest = 0;
         await room.save();
-        console.log(room);
         const rooms = await models.Room.find({});
 
         return rooms;
@@ -49,7 +46,6 @@ export default {
           }
           await room.save();
         }
-        console.log(room);
         const rooms = await models.Room.find({});
         return rooms;
       },
@@ -61,7 +57,6 @@ export default {
         const room = await models.Room.findById(args.id);
         const user = await models.User.findById(me.id);
         if (args.time < room.timeLimit) {
-          console.log('Successful Completion');
           room.attempts++;
           room.successes++;
           if (args.time < room.fastest) {
@@ -86,6 +81,7 @@ export default {
 
     approveRoom: combineResolvers(
       isAuthenticated,
+      isAdmin,
       async (parent, { id }, { models }) => {
         const room = await models.Room.findById(id);
         if (room) {
@@ -99,6 +95,7 @@ export default {
 
     removeRoom: combineResolvers(
       isAuthenticated,
+      isAdmin,
 
       async (parent, { id }, { models }) => {
         const room = await models.Room.findById(id);

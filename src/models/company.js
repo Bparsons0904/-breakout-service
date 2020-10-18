@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import Room from './room';
 
 const companySchema = new mongoose.Schema({
   name: {

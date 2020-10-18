@@ -3,7 +3,6 @@ import { combineResolvers } from 'graphql-resolvers';
 import { AuthenticationError, UserInputError } from 'apollo-server';
 
 import { isAdmin, isAuthenticated } from './authorization';
-import { argsToArgsConfig } from 'graphql/type/definition';
 
 const createToken = async (user, secret, expiresIn) => {
   const { id, email, username, role } = user;
@@ -31,12 +30,11 @@ export default {
   Mutation: {
     signUp: async (
       parent,
-      { username, email, password },
+      { username, email, password, role },
       { models, secret },
     ) => {
       const successfulRooms = 0;
       const failedRooms = 0;
-      const role = 'user';
       const user = await models.User.create({
         username,
         email,
@@ -141,12 +139,4 @@ export default {
       },
     ),
   },
-
-  // User: {
-  //   messages: async (user, args, { models }) => {
-  //     return await models.Message.find({
-  //       userId: user.id,
-  //     });
-  //   },
-  // },
 };
