@@ -17,10 +17,11 @@ export default {
     createCompany: combineResolvers(
       isAuthenticated,
       async (parent, args, { models, me }) => {
-        console.log(args);
+        // Set company to incoming params
         const company = await models.Company.create({
           ...args,
         });
+        // Query and return all companies
         const companies = await models.Company.find({});
         return companies;
       },
@@ -29,10 +30,11 @@ export default {
       isAuthenticated,
       isAdmin,
       async (parent, args, { models, me }) => {
+        // Query company and set to active
         const company = await models.Company.findById(args.id);
         company.active = true;
         await company.save();
-
+        // Query and return all companies
         const companies = await models.Company.find({});
         return companies;
       },
@@ -43,12 +45,12 @@ export default {
       isAdmin,
 
       async (parent, { id }, { models }) => {
+        // Query and remove company if found
         const company = await models.Company.findById(id);
-
         if (company) {
           await company.remove();
         }
-
+        // Query and return all companies
         const companies = await models.Company.find({});
         return companies;
       },

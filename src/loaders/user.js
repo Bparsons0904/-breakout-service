@@ -1,3 +1,4 @@
+// Get users where id match
 export const batchUsers = async (keys, models) => {
   const users = await models.User.find({
     _id: {
@@ -5,5 +6,5 @@ export const batchUsers = async (keys, models) => {
     },
   });
 
-  return keys.map(key => users.find(user => user.id == key));
+  return keys.map((key) => users.find((user) => user.id == key));
 };

@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 7,
-    maxlength: 99,
+    maxlength: 60,
   },
   role: {
     type: String,
@@ -47,6 +47,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// Find user by username, then email if username not found
 userSchema.statics.findByLogin = async function (login) {
   let user = await this.findOne({
     username: login,
@@ -59,6 +60,7 @@ userSchema.statics.findByLogin = async function (login) {
   return user;
 };
 
+// Before saving, hash password
 userSchema.pre('save', async function () {
   if (this.password.slice(0, 7) != '$2b$10$') {
     console.log(this.password.slice(0, 7));
@@ -66,12 +68,15 @@ userSchema.pre('save', async function () {
   }
 });
 
+// Hash password
 userSchema.methods.generatePasswordHash = async function () {
   const saltRounds = 10;
   return await bcrypt.hash(this.password, saltRounds);
 };
 
+// Validate entered password
 userSchema.methods.validatePassword = async function (password) {
+  console.log(password, this.password);
   return await bcrypt.compare(password, this.password);
 };
 
