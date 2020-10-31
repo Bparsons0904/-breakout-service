@@ -74,7 +74,7 @@ export default {
           const index = user.wishlist.indexOf(args.id);
           user.wishlist.splice(index, 1);
         }
-        user.save();
+        await user.save();
         console.log(user);
         return user;
       },
@@ -93,7 +93,7 @@ export default {
           const index = user.favorites.indexOf(args.id);
           user.favorites.splice(index, 1);
         }
-        user.save();
+        await user.save();
         console.log(user);
         return user;
       },
@@ -111,7 +111,7 @@ export default {
           const index = user.completedRooms.indexOf(args.id);
           user.completedRooms.splice(index, 1);
         }
-        user.save();
+        await user.save();
         return user;
       },
     ),

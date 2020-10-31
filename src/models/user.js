@@ -60,7 +60,10 @@ userSchema.statics.findByLogin = async function (login) {
 };
 
 userSchema.pre('save', async function () {
-  this.password = await this.generatePasswordHash();
+  if (this.password.slice(0, 7) != '$2b$10$') {
+    console.log(this.password.slice(0, 7));
+    this.password = await this.generatePasswordHash();
+  }
 });
 
 userSchema.methods.generatePasswordHash = async function () {
