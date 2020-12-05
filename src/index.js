@@ -63,7 +63,7 @@ const server = new ApolloServer({
       };
     }
 
-    // Get user based
+    // Get user based on token
     if (req) {
       const me = await getMe(req);
 

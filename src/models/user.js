@@ -63,7 +63,6 @@ userSchema.statics.findByLogin = async function (login) {
 // Before saving, hash password
 userSchema.pre('save', async function () {
   if (this.password.slice(0, 7) != '$2b$10$') {
-    console.log(this.password.slice(0, 7));
     this.password = await this.generatePasswordHash();
   }
 });
@@ -76,7 +75,6 @@ userSchema.methods.generatePasswordHash = async function () {
 
 // Validate entered password
 userSchema.methods.validatePassword = async function (password) {
-  console.log(password, this.password);
   return await bcrypt.compare(password, this.password);
 };
 

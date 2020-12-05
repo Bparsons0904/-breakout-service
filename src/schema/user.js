@@ -16,6 +16,7 @@ export default gql`
     ): Token!
 
     signIn(login: String!, password: String!): Token!
+
     updateUser(
       id: ID
       wishlist: ID
